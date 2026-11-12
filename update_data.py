@@ -94,3 +94,35 @@ def main():
     }
     for key, (series_id, source, frequency) in SERIES.items():
         try:
+            values = fred_series(series_id)
+            data['series'][key] = {
+                'id': series_id, 'source': source, 'frequency': frequency,
+                'values': values, 'status': 'ok',
+                'url': f'https://fred.stlouisfed.org/series/{series_id}',
+            }
+            print(f'OK {key}: {values[-1]}', flush=True)
+        except Exception as exc:
+            data['errors'][key] = str(exc)
+            if key in prior_series:
+                data['series'][key] = {**prior_series[key], 'status': 'stale'}
+            print(f'ERROR {key}: {exc}', flush=True)
+
+    try:
+        ism = ism_report()
+        history = prior_series.get('pmi', {}).get('values', [])
+        values_by_date = {item['date']: item for item in history}
+        values_by_date[ism['date']] = {'date': ism['date'], 'value': ism['value']}
+        values = sorted(values_by_date.values(), key=lambda item: item['date'])
+        data['series']['pmi'] = {
+            'id': 'ISM-PMI', 'source': 'ISM official', 'frequency': 'monthly',
+            'values': values, 'status': 'ok', 'url': ism['url'],
+        }
+        print(f'OK pmi: {ism}', flush=True)
+    except Exception as exc:
+        data['errors']['pmi'] = str(exc)
+        if 'pmi' in prior_series:
+            data['series']['pmi'] = {**prior_series['pmi'], 'status': 'stale'}
+        print(f'ERROR pmi: {exc}', flush=True)
+
+    DEST.write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')),
+                    encoding='utf-8')
