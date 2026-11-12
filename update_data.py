@@ -1,3 +1,35 @@
+#!/usr/bin/env python3
+"""Actualiza los indicadores macro en data.json desde FRED e ISM.
+
+Necesita FRED_API_KEY como secreto de GitHub Actions.
+Cuando una fuente falla, conserva los datos previos y los marca stale.
+"""
+import json
+import os
+import re
+from datetime import datetime, timezone
+from pathlib import Path
+
+import requests
+from bs4 import BeautifulSoup
+
+ROOT = Path(__file__).resolve().parent
+DEST = ROOT / 'data.json'
+KEY = os.environ.get('FRED_API_KEY', '').strip()
+SESSION = requests.Session()
+SESSION.headers.update({'User-Agent': 'CicloMacroDashboard/2.1 (personal research)'})
+SERIES = {
+    'core_pce_index': ('PCEPILFE', 'BEA/FRED', 'monthly'),
+    'tips10': ('DFII10', 'Treasury/FRED', 'daily'),
+    'ccc_spread': ('BAMLH0A3HYC', 'ICE BofA/FRED', 'daily'),
+    'unemployment': ('UNRATE', 'BLS/FRED', 'monthly'),
+    'claims': ('ICSA', 'DOL/FRED', 'weekly'),
+    'industrial': ('INDPRO', 'Federal Reserve/FRED', 'monthly'),
+    'yield_curve': ('T10Y2Y', 'Treasury/FRED', 'daily'),
+}
+
+
+def fred_series(series_id):
     if not KEY:
         raise RuntimeError('Falta el secreto FRED_API_KEY en GitHub Actions')
     resp = SESSION.get(
