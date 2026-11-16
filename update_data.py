@@ -22,6 +22,7 @@ SERIES = {
     'core_pce_index': ('PCEPILFE', 'BEA/FRED', 'monthly'),
     'tips10': ('DFII10', 'Treasury/FRED', 'daily'),
     'ccc_spread': ('BAMLH0A3HYC', 'ICE BofA/FRED', 'daily'),
+    'credit_baa': ('BAA10YM', 'Moody’s/FRED', 'monthly'),
     'unemployment': ('UNRATE', 'BLS/FRED', 'monthly'),
     'claims': ('ICSA', 'DOL/FRED', 'weekly'),
     'industrial': ('INDPRO', 'Federal Reserve/FRED', 'monthly'),
@@ -146,7 +147,7 @@ def main():
 
     DEST.write_text(json.dumps(result, ensure_ascii=False, separators=(',', ':')),
                     encoding='utf-8')
-    print(f'Wrote {DEST.name}: {success}/8 fuentes actualizadas, '
+    print(f'Wrote {DEST.name}: {success}/{len(SERIES)+1} fuentes actualizadas, '
           f'{len(result["errors"])} errores', flush=True)
 
 
