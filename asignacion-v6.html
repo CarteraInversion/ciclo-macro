@@ -26,6 +26,7 @@
 .orders th:nth-child(n+3),.orders td:nth-child(n+3){text-align:right}
 .positive{color:var(--green)}.negative{color:#f0a7a7}
 .smallprint{color:var(--muted);font-size:12px;line-height:1.5}
+.history-scroll{overflow-x:auto}.history-scroll table{min-width:640px}.history-scroll th:nth-child(n+2),.history-scroll td:nth-child(n+2){text-align:left}.history-scroll th:last-child,.history-scroll td:last-child{text-align:right}
 @media(max-width:750px){.statusgrid,.fields{grid-template-columns:1fr 1fr}}
 @media(max-width:460px){.statusgrid,.fields{grid-template-columns:1fr}}
 </style></head>
@@ -46,6 +47,20 @@
   <h2 style="margin-top:24px">Indicadores utilizados en la señal</h2>
   <div class="data-table-wrap"><table class="data-table"><thead><tr><th>Variable del modelo</th><th>Último dato utilizado</th><th>Fecha observación</th></tr></thead><tbody id="sourceRows"></tbody></table></div>
   <p class="smallprint">Fechas de observación, no fechas oficiales de publicación. El modelo aplica retardos aproximados. Los datos de FRED pueden revisarse posteriormente y no constituyen una validación punto-en-tiempo.</p>
+</section>
+<section class="panel" id="history-panel">
+  <div class="section-title"><h2>Historial de cambios de fase V6</h2><span class="pill" id="historyTag">Calculando…</span></div>
+  <p class="hint">Reconstrucción mensual con el mismo <code>clasificador-v6.js</code> y los datos de FRED disponibles actualmente. El cierre de referencia no es la fecha exacta en la que se publicó o conoció la señal.</p>
+  <div class="statusgrid">
+    <div class="statusbox"><div class="label">Última entrada en la fase actual</div><div class="value" id="entryDate">—</div><div class="detail" id="entryDetail">—</div></div>
+    <div class="statusbox"><div class="label">Fase de procedencia</div><div class="value" id="entryFrom">—</div><div class="detail" id="entryFromDetail">—</div></div>
+    <div class="statusbox"><div class="label">Permanencia consecutiva</div><div class="value" id="monthsInPhase">—</div><div class="detail" id="durationDetail">—</div></div>
+  </div>
+  <p class="notice" id="historyNotice">Calculando fases históricas…</p>
+  <h2 style="margin-top:24px">Últimas transiciones detectadas</h2>
+  <div class="history-scroll"><table><thead><tr><th>Cierre de entrada</th><th>Desde</th><th>Hacia</th><th>Meses en fase anterior</th></tr></thead><tbody id="historyRows"><tr><td colspan="4">Cargando…</td></tr></tbody></table></div>
+  <div class="actions"><button class="button" type="button" id="exportHistory" disabled>↓ Exportar cambios CSV</button></div>
+  <p class="smallprint">La tabla usa observaciones revisadas y retardos estimados del modelo proxy. No reconstruye las publicaciones históricas reales (vintages ALFRED). «Meses en fase anterior» es la duración consecutiva antes de cada transición; se excluyen tramos sin diagnóstico. No equivale a una fecha de ejecución de órdenes.</p>
 </section>
 <section class="panel" id="rebalance-panel">
   <div class="section-title"><h2>Rebalanceo de tu cartera V6</h2><span class="pill" id="ordersMode">Simulador</span></div>
@@ -76,7 +91,7 @@ const INFO={SPY:'S&P 500',QQQ:'Nasdaq 100',IWO:'Small Caps Growth',IWN:'Small Ca
 const COLORS=['#5d8fbb','#d0a44f','#ae8dcb','#64a99b','#c48289','#739eb4','#9caa78'];
 const ALL=Object.keys(INFO), KEY='carterainversion_v6_posiciones_v1';
 const labels={core:'Core PCE interanual',tips:'TIPS 10 años',credit:'Spread Baa–Treasury',ind_yoy:'Producción industrial interanual',ind_3m:'Producción industrial 3 meses',unempd:'Cambio del desempleo 3 meses'};
-let data=null,calculated=null,previous=null,selection=1,diagnostic=null,previousDiagnostic=null,modelOk=false,positions={};
+let data=null,calculated=null,previous=null,selection=1,diagnostic=null,previousDiagnostic=null,modelOk=false,positions={},phaseTimeline=[],phaseTransitions=[];
 const $=s=>document.querySelector(s);
 const euro=n=>Number(n).toLocaleString('es-ES',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2});
 const num=n=>Number(n).toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:2});
@@ -132,6 +147,68 @@ function renderSignal(){
   text('healthNotice',problems.join(' '));
   modelOk=calculated!==null&&s.staleSeries.length===0&&s.days<=14;
 }
+// Recalcula cada cierre de mes con la MISMA función del radar; no utiliza datos futuros según los retardos del modelo.
+// Para evaluar el cierre de un mes M, pasamos el primer día de M+1: evaluate() toma el último mes completo.
+function buildHistory(){
+  phaseTimeline=[];phaseTransitions=[];
+  if(!data||!diagnostic?.decisionDate||!window.MacroV6)return;
+  const keys=['core_pce_index','industrial','unemployment','credit_baa','tips10'];
+  const allDates=keys.flatMap(k=>(data.series?.[k]?.values||[]).map(x=>x.date)).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x));
+  if(!allDates.length)return;
+  const first=allDates.sort()[0];
+  const start=new Date(Date.UTC(Number(first.slice(0,4)),Number(first.slice(5,7))-1,1));
+  const last=diagnostic.decisionDate;
+  const lastY=Number(last.slice(0,4)),lastM=Number(last.slice(5,7))-1;
+  // Límite de seguridad: evita calcular décadas si la fuente trae demasiados datos.
+  let iterations=0;
+  for(let y=start.getUTCFullYear(),m=start.getUTCMonth();y<lastY||(y===lastY&&m<=lastM);m++){
+    if(m===12){y++;m=0;}
+    if(++iterations>1200)break;
+    const asOf=new Date(Date.UTC(y,m+1,1));
+    const evaluated=window.MacroV6.evaluate(data,asOf);
+    phaseTimeline.push({date:evaluated.decisionDate,phase:evaluated.phase});
+  }
+  // Solo se pueden identificar transiciones cuando ambos meses consecutivos tienen una fase válida.
+  let run=0;
+  for(let i=0;i<phaseTimeline.length;i++){
+    const cur=phaseTimeline[i],prev=phaseTimeline[i-1];
+    if(cur.phase===null){run=0;continue;}
+    if(prev&&prev.phase!==null&&prev.phase!==cur.phase){
+      phaseTransitions.push({date:cur.date,from:prev.phase,to:cur.phase,previousMonths:run});
+      run=1;
+    }else{run=prev&&prev.phase===cur.phase?run+1:1;}
+  }
+}
+function renderHistory(){
+  const tbody=$('#historyRows'),btn=$('#exportHistory');
+  const last=phaseTimeline.at(-1);
+  const valid=last&&last.phase!==null&&last.phase===calculated;
+  if(!valid){
+    text('entryDate','—');text('entryFrom','—');text('monthsInPhase','—');
+    text('entryDetail','Historial no disponible');text('entryFromDetail','—');text('durationDetail','—');
+    text('historyTag','Sin historial válido');
+    text('historyNotice','No puede reconstruirse una secuencia mensual comparable con los datos disponibles.');
+    tbody.innerHTML='<tr><td colspan="4">Sin cambios mensuales verificables</td></tr>';
+    btn.disabled=true;return;
+  }
+  let start=phaseTimeline.length-1;
+  while(start>0&&phaseTimeline[start-1].phase===calculated)start--;
+  const entry=phaseTimeline[start],before=phaseTimeline[start-1],duration=phaseTimeline.length-start;
+  const knownEntry=!!before&&before.phase!==null;
+  text('entryDate',entry.date);
+  text('entryDetail',knownEntry?'Cierre de referencia de la transición':'Primer cierre de esta secuencia observada');
+  text('entryFrom',knownEntry?namePhase(before.phase):'No determinable');
+  text('entryFromDetail',knownEntry?'Fase del cierre inmediatamente anterior':'No hay un cierre anterior comparable');
+  text('monthsInPhase',duration+(duration===1?' mes':' meses'));
+  text('durationDetail','Hasta el cierre '+last.date);
+  text('historyTag',knownEntry?'Última entrada identificada':'Entrada no verificable');
+  text('historyNotice',knownEntry
+    ?`El modelo pasa de ${PHASES[before.phase]} a ${PHASES[calculated]} en el cierre ${entry.date}. Es un mes de referencia del modelo, NO la fecha de publicación ni la fecha exacta de operación.`
+    :'Se observa la fase actual desde el primer cierre disponible, pero no se puede demostrar cuándo comenzó ni de qué fase procedía.');
+  const recent=phaseTransitions.slice(-12).reverse();
+  tbody.innerHTML=recent.length?recent.map(t=>`<tr><td>${t.date}</td><td>${namePhase(t.from)}</td><td>${namePhase(t.to)}</td><td>${t.previousMonths} ${t.previousMonths===1?'mes':'meses'}</td></tr>`).join(''):'<tr><td colspan="4">No hay transiciones consecutivas detectables en los datos</td></tr>';
+  btn.disabled=phaseTransitions.length===0;
+}
 function renderAllocation(){
   const w=WEIGHTS[selection],c=capital(),totals={'Acciones':0,'Bonos':0,'Oro':0};
   text('phaseHeading',namePhase(selection));
@@ -181,11 +258,11 @@ async function refresh(){
     text('currentHelp','Cierre macro: '+diagnostic.decisionDate+' · Último proceso: '+(data.updated_at?new Date(data.updated_at).toLocaleString('es-ES'):'fecha no disponible'));
     text('status','Datos cargados · '+Object.keys(data.errors||{}).length+' fuentes con errores reportados');
     if(calculated!==null){selection=calculated;$('#phase').value=String(selection);}
-    renderSignal();render();
+    buildHistory();renderHistory();renderSignal();render();
   }catch(err){
-    data=null;diagnostic=null;previousDiagnostic=null;calculated=null;previous=null;modelOk=false;
+    data=null;diagnostic=null;previousDiagnostic=null;calculated=null;previous=null;modelOk=false;phaseTimeline=[];phaseTransitions=[];
     text('actual','No se pudo obtener el diagnóstico');text('status','Error al leer los datos: '+err.message);text('mode','Sin señal');
-    renderSignal();render();
+    renderHistory();renderSignal();render();
   }
 }
 function csvDownload(filename,rows){
@@ -205,6 +282,12 @@ $('#exportOrders').addEventListener('click',()=>{
   const rows=[['Fase seleccionada','Fase del radar','Cierre macro','ETF','Activo','Actual EUR','Objetivo EUR','Diferencia EUR','Accion','Tipo señal'],
   ...orders.filter(o=>o.current>.005||o.target>.005).map(o=>[PHASES[selection],namePhase(calculated),diagnostic?.decisionDate||'',o.ticker,INFO[o.ticker],o.current.toFixed(2),o.target.toFixed(2),o.diff.toFixed(2),Math.abs(o.diff)<.005?'Mantener':o.diff>0?'Comprar':'Vender',selection===calculated&&modelOk?'Calculada - verificar':'Simulacion / datos no verificados'])];
   csvDownload('rebalanceo_V6_'+(diagnostic?.decisionDate||'sin-fecha')+'.csv',rows);
+});
+$('#exportHistory').addEventListener('click',()=>{
+  if(!phaseTransitions.length)return;
+  const rows=[['Cierre entrada','Fase anterior','Nueva fase','Meses en fase anterior'],
+    ...phaseTransitions.map(t=>[t.date,namePhase(t.from),namePhase(t.to),t.previousMonths])];
+  csvDownload('historial_fases_V6_'+(diagnostic?.decisionDate||'sin-fecha')+'.csv',rows);
 });
 $('#clearHoldings').addEventListener('click',()=>{
   if(!confirm('¿Poner a cero todas las posiciones guardadas en este navegador?'))return;
