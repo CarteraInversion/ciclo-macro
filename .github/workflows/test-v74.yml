@@ -1,0 +1,25 @@
+name: Validar migración V7.4
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'asignacion-v74.html'
+      - 'clasificador-v74.js'
+      - 'clasificador-v6.js'
+      - 'tests/v74.test.cjs'
+      - '.github/workflows/test-v74.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar paridad de reglas y asignaciones
+        run: node --test tests/v74.test.cjs

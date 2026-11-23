@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Asignación sectorial V7.4 | CarteraInversion</title>
+<style>
+:root{color-scheme:dark;--bg:#0d192b;--panel:#182b45;--edge:#304761;--gold:#e4b24e;--ink:#f3f4f8;--muted:#a2b1c6;--green:#77caa4;--warn:#f2b369}*{box-sizing:border-box}body{background:var(--bg);color:var(--ink);font-family:Inter,'Segoe UI',Arial,sans-serif;margin:0}main{max-width:1160px;margin:auto;padding:28px 22px 70px}nav{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 28px}nav a{border:1px solid var(--edge);padding:11px 15px;border-radius:9px;color:var(--ink);text-decoration:none;font-weight:600;font-size:13px}nav a.active{border-color:var(--gold);color:var(--gold)}nav a:hover{border-color:var(--gold)}h1,h2{font-family:Georgia,serif}h1{font-size:clamp(28px,4vw,44px);margin:8px 0 10px}h2{font-size:24px;margin:0 0 15px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:750}.sub,.hint{color:var(--muted);line-height:1.6}.hint{font-size:13px}.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}.button{background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:8px;padding:10px 15px;font:inherit;cursor:pointer}.button:hover{background:#28384f}.panel{padding:23px;border:1px solid var(--edge);background:var(--panel);border-radius:12px;margin-top:20px}.feature{border-color:#876a39}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#112138;border:1px solid var(--edge);border-radius:10px;padding:15px}.metric .label{color:var(--muted);font-size:12px}.metric .value{font-weight:700;font-size:22px;margin-top:7px}.bar{display:flex;height:18px;gap:2px;border-radius:6px;overflow:hidden;background:#203651;margin:18px 0}.bar span{height:100%}table{border-collapse:collapse;width:100%;font-size:14px}th{color:var(--gold);text-align:left}th,td{padding:12px 9px;border-bottom:1px solid var(--edge)}td:nth-child(n+3),th:nth-child(n+3){text-align:right}input,select{background:#0d192b;border:1px solid #506785;color:white;border-radius:8px;padding:10px;font:inherit;max-width:100%}input{width:100%}label{color:var(--muted);font-size:13px;display:block;margin-bottom:9px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px}.pill{color:var(--gold);border:1px solid var(--gold);padding:6px 10px;border-radius:100px;font-size:12px;font-weight:700}.notice{font-size:13px;color:var(--warn);background:#34291f;border:1px solid #745c35;padding:14px 17px;border-radius:9px;line-height:1.6;margin-top:15px}.mini{font-size:12px;color:var(--muted)}.good{color:var(--green)}@media(max-width:750px){.grid,.metrics,.choices{grid-template-columns:1fr}main{padding:18px 13px 50px}.panel{padding:16px}td,th{padding:9px 5px;font-size:12px}}
+
+.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.statusgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.statusbox{background:#112138;border:1px solid var(--edge);border-radius:10px;padding:14px}
+.statusbox .label{color:var(--muted);font-size:12px}
+.statusbox .value{font-weight:750;font-size:17px;margin-top:7px}
+.statusbox .detail{color:var(--muted);font-size:12px;margin-top:5px;line-height:1.4}
+.data-table th,.data-table td{font-size:12px;padding:9px 7px}
+.data-table td:nth-child(2),.data-table td:nth-child(3),.data-table th:nth-child(2),.data-table th:nth-child(3){text-align:left}
+.data-table-wrap{overflow-x:auto}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.field{background:#112138;padding:11px;border:1px solid var(--edge);border-radius:8px}
+.field label{margin-bottom:6px}
+.field input{font-size:15px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.btn-secondary{border-color:#6584a6;color:#d2def0}
+.orders{overflow-x:auto}
+.orders table{min-width:660px}
+.orders .buy{color:var(--green);font-weight:750}
+.orders .sell{color:#f0a7a7;font-weight:750}
+.orders .hold{color:var(--muted)}
+.orders th:nth-child(n+3),.orders td:nth-child(n+3){text-align:right}
+.positive{color:var(--green)}.negative{color:#f0a7a7}
+.smallprint{color:var(--muted);font-size:12px;line-height:1.5}
+.history-scroll{overflow-x:auto}.history-scroll table{min-width:640px}.history-scroll th:nth-child(n+2),.history-scroll td:nth-child(n+2){text-align:left}.history-scroll th:last-child,.history-scroll td:last-child{text-align:right}
+@media(max-width:750px){.statusgrid,.fields{grid-template-columns:1fr 1fr}}
+@media(max-width:460px){.statusgrid,.fields{grid-template-columns:1fr}}
+</style></head>
+<body><main><nav aria-label="Secciones del radar"><a href="./index.html">Radar macro · 6 fases</a><a href="./adelantados.html">Indicadores adelantados</a><a href="./asignacion-v74.html" class="active" aria-current="page">Asignación sectorial V7.4</a></nav>
+<div class="top"><div><div class="eyebrow">CarteraInversion · Estrategia V7.4</div><h1>Asignación sectorial por fase</h1><p class="sub">Pesos fijados en el backtest V7.4 · Clasificación mensual sin confirmación adicional.</p></div><button id="refresh" class="button" type="button">↻ Actualizar datos</button></div>
+<div id="status" class="hint" role="status" aria-live="polite">Consultando indicadores…</div>
+<section class="panel feature"><div class="top"><div><div class="eyebrow">Diagnóstico calculado del radar</div><h2 id="actual">Cargando fase…</h2><div class="hint" id="currentHelp"></div></div><span id="mode" class="pill">Pendiente</span></div><div id="warning" class="notice">Modelo V7.4 PROXY: producción industrial, Baa–Treasury, empleo, Core PCE y TIPS. La fase de ambas pestañas comparte exactamente la misma función. Datos revisables; confirma la señal antes de rebalancear.</div></section>
+<section class="panel"><h2>Explorar la asignación</h2><div class="choices"><div><label for="phase">Fase para visualizar</label><select id="phase"><option value="0">1 · Recuperación</option><option value="1">2 · Expansión</option><option value="2">3 · Reflación avanzada</option><option value="3">4 · Goldilocks</option><option value="4">5 · Desaceleración</option><option value="5">6 · Recesión</option></select></div><div><label for="capital">Capital destinado a la estrategia (EUR)</label><input id="capital" type="number" min="0" step="100" value="10000"></div></div><p class="hint" id="selectionInfo"></p><div class="bar" id="allocationBar" role="img" aria-label="Distribución de la cartera"></div><div class="grid"><div><h2 id="phaseHeading">Distribución</h2><table><thead><tr><th>ETF</th><th>Exposición</th><th>Peso</th><th>Capital (€)</th></tr></thead><tbody id="allocRows"></tbody></table></div><div><h2>Resumen de exposición</h2><div id="summary" class="metrics"></div><p class="hint">Importes objetivo orientativos. No descuentan comisiones, cambios EUR/USD, fiscalidad ni redondeo a participaciones enteras.</p><button id="export" class="button" type="button">↓ Exportar distribución CSV</button></div></div></section>
+<section class="panel" id="signal-panel">
+  <div class="section-title"><h2>Seguimiento de la señal mensual</h2><span id="signalTag" class="pill">Comprobando historial</span></div>
+  <p class="hint">Comparación de la fase calculada al cierre del último mes completo y del mes anterior. No es una alerta de ejecución inmediata.</p>
+  <div class="statusgrid">
+    <div class="statusbox"><div class="label">Cierre mensual de referencia</div><div class="value" id="decisionDate">—</div><div class="detail" id="updateTime">—</div></div>
+    <div class="statusbox"><div class="label">Fase del mes anterior</div><div class="value" id="previousPhase">—</div><div class="detail" id="previousDate">—</div></div>
+    <div class="statusbox"><div class="label">Fase actual del modelo</div><div class="value" id="newPhase">—</div><div class="detail" id="changeDetail">—</div></div>
+  </div>
+  <p class="notice" id="healthNotice">Verificando fechas y disponibilidad de indicadores…</p>
+  <h2 style="margin-top:24px">Indicadores utilizados en la señal</h2>
+  <div class="data-table-wrap"><table class="data-table"><thead><tr><th>Variable del modelo</th><th>Último dato utilizado</th><th>Fecha observación</th></tr></thead><tbody id="sourceRows"></tbody></table></div>
+  <p class="smallprint">Fechas de observación, no fechas oficiales de publicación. El modelo aplica retardos aproximados. Los datos de FRED pueden revisarse posteriormente y no constituyen una validación punto-en-tiempo.</p>
+</section>
+<section class="panel" id="history-panel">
+  <div class="section-title"><h2>Historial de cambios de fase V7.4</h2><span class="pill" id="historyTag">Calculando…</span></div>
+  <p class="hint">Reconstrucción mensual con el mismo <code>clasificador-v74.js</code> y los datos de FRED disponibles actualmente. El cierre de referencia no es la fecha exacta en la que se publicó o conoció la señal.</p>
+  <div class="statusgrid">
+    <div class="statusbox"><div class="label">Última entrada en la fase actual</div><div class="value" id="entryDate">—</div><div class="detail" id="entryDetail">—</div></div>
+    <div class="statusbox"><div class="label">Fase de procedencia</div><div class="value" id="entryFrom">—</div><div class="detail" id="entryFromDetail">—</div></div>
+    <div class="statusbox"><div class="label">Permanencia consecutiva</div><div class="value" id="monthsInPhase">—</div><div class="detail" id="durationDetail">—</div></div>
+  </div>
+  <p class="notice" id="historyNotice">Calculando fases históricas…</p>
+  <h2 style="margin-top:24px">Últimas transiciones detectadas</h2>
+  <div class="history-scroll"><table><thead><tr><th>Cierre de entrada</th><th>Desde</th><th>Hacia</th><th>Meses en fase anterior</th></tr></thead><tbody id="historyRows"><tr><td colspan="4">Cargando…</td></tr></tbody></table></div>
+  <div class="actions"><button class="button" type="button" id="exportHistory" disabled>↓ Exportar cambios CSV</button></div>
+  <p class="smallprint">La tabla usa observaciones revisadas y retardos estimados del modelo proxy. No reconstruye las publicaciones históricas reales (vintages ALFRED). «Meses en fase anterior» es la duración consecutiva antes de cada transición; se excluyen tramos sin diagnóstico. No equivale a una fecha de ejecución de órdenes.</p>
+</section>
+<section class="panel" id="rebalance-panel">
+  <div class="section-title"><h2>Rebalanceo de tu cartera V7.4</h2><span class="pill" id="ordersMode">Simulador</span></div>
+  <p class="hint">Introduce el valor de mercado actual en euros de cada ETF de la estrategia. El importe destinado a V7.4 se establece en «Capital destinado» arriba. La diferencia se considera efectivo disponible (o déficit si es negativa).</p>
+  <div class="fields" id="holdingsGrid"></div>
+  <div class="statusgrid">
+    <div class="statusbox"><div class="label">Invertido actualmente</div><div class="value" id="invested">—</div></div>
+    <div class="statusbox"><div class="label">Efectivo implícito / diferencia</div><div class="value" id="cash">—</div></div>
+    <div class="statusbox"><div class="label">Capital objetivo total</div><div class="value" id="targetCapital">—</div></div>
+  </div>
+  <p id="orderWarning" class="notice">Introduce los valores actuales. Sin confirmar la señal, las cantidades son solo una simulación.</p>
+  <div class="orders" style="margin-top:18px"><table><thead><tr><th>ETF</th><th>Activo</th><th>Actual (€)</th><th>Objetivo (€)</th><th>Diferencia (€)</th><th>Acción</th></tr></thead><tbody id="orderRows"></tbody></table></div>
+  <div class="statusgrid">
+    <div class="statusbox"><div class="label">Compras estimadas</div><div class="value" id="buys">—</div></div>
+    <div class="statusbox"><div class="label">Ventas estimadas</div><div class="value" id="sells">—</div></div>
+    <div class="statusbox"><div class="label">Efectivo tras ajustar</div><div class="value" id="residual">—</div></div>
+  </div>
+  <div class="actions"><button type="button" class="button" id="exportOrders">↓ Exportar rebalanceo CSV</button><button type="button" class="button btn-secondary" id="clearHoldings">Restablecer posiciones a cero</button></div>
+  <p class="smallprint">Los valores introducidos se guardan exclusivamente en el navegador de este dispositivo. No se envían a GitHub. Los cálculos son importes teóricos: antes de operar considera disponibilidad del ETF/UCITS, divisa, comisiones, impuestos, lotes mínimos y efectivo real. No se conecta a ningún bróker.</p>
+</section>
+<section class="panel"><h2>Metodología y precauciones</h2><p class="hint">El Radar y esta página usan <code>clasificador-v74.js</code> y <code>data.json</code>. La clasificación proxy conserva la lógica de fases V6; V7.4 sustituye las ponderaciones, no el clasificador. La paridad histórica exacta con las 235 señales aún requiere auditoría. Se usan datos macro revisados y retrasos aproximados de publicación, no vintages ALFRED. El spread Baa–Treasury no equivale a CCC. La página no ejecuta órdenes. El resultado histórico V7.4 (CAGR simulado 15,45 %) se ajustó tras examinar datos históricos y no es una rentabilidad futura esperada.</p><p class="hint">La fase explorada manualmente solo sirve para examinar asignaciones; no altera la fase calculada ni el funcionamiento de GitHub Actions.</p></section></main>
+<script src="./clasificador-v74.js"></script>
+<script>
+'use strict';
+const PHASES=['Recuperación','Expansión','Reflación avanzada','Goldilocks','Desaceleración','Recesión'];
+const RAW_WEIGHTS=[{"SPY":25,"IWO":20,"IWN":15,"XLI":15,"XLF":10,"QQQ":5,"GLD":10},{"SHY":5,"XLB":13.6,"XLE":28.5,"XLI":12.8,"XLU":13.2,"XLV":13.5,"XLY":13.4},{"SHY":5,"XLB":11.4,"XLE":28.5,"XLF":19.1,"XLP":13.7,"XLU":11.7,"XLV":10.6},{"SPY":11.6,"QQQ":17.1,"TLT":15.8,"SHY":5,"XLK":21.3,"XLU":14.5,"XLV":14.7},{"QQQ":17.8,"GLD":12,"SHY":14.5,"XLK":18.1,"XLP":12.2,"XLC":25.5},{"QQQ":18.4,"GLD":14.5,"SHY":5,"XLB":16.4,"XLI":12.1,"XLK":18,"XLY":15.7}];
+const WEIGHTS=RAW_WEIGHTS.map(w=>{const sum=Object.values(w).reduce((a,b)=>a+b,0);return Object.fromEntries(Object.entries(w).map(([k,v])=>[k,100*v/sum]));});
+if(WEIGHTS.length!==6||WEIGHTS.some(w=>Math.abs(Object.values(w).reduce((a,b)=>a+b,0)-100)>1e-8))throw Error('Pesos V7.4 inválidos');
+const INFO={SPY:'S&P 500',QQQ:'Nasdaq 100',IWO:'Small Caps Growth',IWN:'Small Caps Value',XLI:'Industriales',XLF:'Financieras',XLE:'Energía',XLB:'Materiales',XLK:'Tecnología',XLV:'Salud',XLP:'Consumo básico',XLC:'Servicios de comunicación',XLY:'Consumo discrecional',XLU:'Utilities',TLT:'Bonos Tesoro largos',IEF:'Bonos Tesoro intermedios',SHY:'Bonos Tesoro cortos',GLD:'Oro'};
+const COLORS=['#5d8fbb','#d0a44f','#ae8dcb','#64a99b','#c48289','#739eb4','#9caa78'];
+const ALL=Object.keys(INFO), KEY='carterainversion_v6_posiciones_v1';
+const labels={core:'Core PCE interanual',tips:'TIPS 10 años',credit:'Spread Baa–Treasury',ind_yoy:'Producción industrial interanual',ind_3m:'Producción industrial 3 meses',unempd:'Cambio del desempleo 3 meses'};
+let data=null,calculated=null,previous=null,selection=1,diagnostic=null,previousDiagnostic=null,modelOk=false,positions={},phaseTimeline=[],phaseTransitions=[];
+const $=s=>document.querySelector(s);
+const euro=n=>Number(n).toLocaleString('es-ES',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>Number(n).toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:2});
+const namePhase=i=>Number.isInteger(i)&&i>=0&&i<6?`Fase ${i+1} · ${PHASES[i]}`:'No determinada';
+const text=(id,v)=>{$('#'+id).textContent=v;};
+const money=n=>Number.isFinite(Number(n))?Math.max(0,Number(n)):0;
+const capital=()=>money($('#capital').value);
+const typ=t=>['SPY','QQQ','IWO','IWN','XLI','XLF','XLE','XLB','XLK','XLV','XLP','XLC','XLY','XLU'].includes(t)?'Acciones':t==='GLD'?'Oro':'Bonos';
+function priorMonthOf(date){
+  const d=new Date(date+'T12:00:00Z');
+  return new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),0));
+}
+function holdingsLoad(){
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'{}');if(s&&typeof s==='object')for(const t of ALL)if(Number.isFinite(Number(s[t]))&&Number(s[t])>=0)positions[t]=Number(s[t]);}catch(_e){}
+}
+function holdingsSave(){try{localStorage.setItem(KEY,JSON.stringify(positions));}catch(_e){}}
+function initHoldings(){
+  $('#holdingsGrid').innerHTML=ALL.map(t=>`<div class="field"><label for="h_${t}">${t} · ${INFO[t]}</label><input id="h_${t}" type="number" min="0" step="0.01" inputmode="decimal" value="${positions[t]||0}" aria-label="Valor actual en EUR de ${t}"></div>`).join('');
+  for(const t of ALL)$('#h_'+t).addEventListener('input',e=>{
+    const n=Number(e.target.value);
+    if(!Number.isFinite(n)||n<0){e.target.setCustomValidity('Introduce un importe no negativo');}else{e.target.setCustomValidity('');positions[t]=n;holdingsSave();}
+    renderOrders();
+  });
+}
+function staleStatus(){
+  const updated=Date.parse(data?.updated_at||'');
+  const days=Number.isFinite(updated)?(Date.now()-updated)/86400000:Infinity;
+  const staleSeries=['core_pce_index','industrial','unemployment','credit_baa','tips10'].filter(k=>!['ok','confirmed'].includes(data?.series?.[k]?.status));
+  return {days,staleSeries};
+}
+function renderSignal(){
+  const currentDate=diagnostic?.decisionDate||'—';
+  text('decisionDate',currentDate);text('newPhase',namePhase(calculated));text('previousPhase',namePhase(previous));
+  text('previousDate',previousDiagnostic?.decisionDate?`Cierre ${previousDiagnostic.decisionDate}`:'Sin datos suficientes');
+  text('updateTime',data?.updated_at?`FRED actualizado: ${new Date(data.updated_at).toLocaleString('es-ES')}`:'Actualización no disponible');
+  const changed=calculated!==null&&previous!==null&&calculated!==previous;
+  const comparable=calculated!==null&&previous!==null;
+  text('signalTag',!comparable?'Comparación no disponible':changed?'Cambio de fase detectado':'Fase sin cambios');
+  text('changeDetail',!comparable?'No hay dos cierres comparables':changed?`Desde ${PHASES[previous]}`:'Sin cambio respecto al mes anterior');
+  const dates=diagnostic?.dates||{},values=diagnostic?.values||{};
+  $('#sourceRows').innerHTML=Object.keys(labels).map(k=>{
+    const value=values[k],date=dates[k];
+    const rendered=Number.isFinite(value)?`${num(value)}${k==='ind_yoy'||k==='ind_3m'||k==='core'?' %':k==='unempd'?' pp':' pp'}`:'—';
+    return `<tr><td>${labels[k]}</td><td>${rendered}</td><td>${date||'—'}</td></tr>`;
+  }).join('');
+  const s=staleStatus();
+  const problems=[];
+  if(calculated===null)problems.push('No se ha podido calcular la fase: faltan datos o historial suficiente.');
+  if(s.staleSeries.length)problems.push('Fuentes marcadas como no confirmadas: '+s.staleSeries.join(', ')+'.');
+  if(s.days>14)problems.push('La última actualización de data.json tiene más de 14 días (o fecha desconocida).');
+  if(!comparable)problems.push('No se puede demostrar si hubo un cambio de fase respecto al cierre previo.');
+  if(!problems.length)problems.push(changed?`Cambio de ${PHASES[previous]} a ${PHASES[calculated]} en la comparación mensual. Antes de operar comprueba que la señal y las revisiones FRED son apropiadas.`:'No se detecta cambio mensual. Confirma los datos antes de ejecutar rebalanceos.');
+  text('healthNotice',problems.join(' '));
+  modelOk=calculated!==null&&s.staleSeries.length===0&&s.days<=14;
+}
+// Recalcula cada cierre de mes con la MISMA función del radar; no utiliza datos futuros según los retardos del modelo.
+// Para evaluar el cierre de un mes M, pasamos el primer día de M+1: evaluate() toma el último mes completo.
+function buildHistory(){
+  phaseTimeline=[];phaseTransitions=[];
+  if(!data||!diagnostic?.decisionDate||!window.MacroV74)return;
+  const keys=['core_pce_index','industrial','unemployment','credit_baa','tips10'];
+  const allDates=keys.flatMap(k=>(data.series?.[k]?.values||[]).map(x=>x.date)).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x));
+  if(!allDates.length)return;
+  const first=allDates.sort()[0];
+  const start=new Date(Date.UTC(Number(first.slice(0,4)),Number(first.slice(5,7))-1,1));
+  const last=diagnostic.decisionDate;
+  const lastY=Number(last.slice(0,4)),lastM=Number(last.slice(5,7))-1;
+  // Límite de seguridad: evita calcular décadas si la fuente trae demasiados datos.
+  let iterations=0;
+  for(let y=start.getUTCFullYear(),m=start.getUTCMonth();y<lastY||(y===lastY&&m<=lastM);m++){
+    if(m===12){y++;m=0;}
+    if(++iterations>1200)break;
+    const asOf=new Date(Date.UTC(y,m+1,1));
+    const evaluated=window.MacroV74.evaluate(data,asOf);
+    phaseTimeline.push({date:evaluated.decisionDate,phase:evaluated.phase});
+  }
+  // Solo se pueden identificar transiciones cuando ambos meses consecutivos tienen una fase válida.
+  let run=0;
+  for(let i=0;i<phaseTimeline.length;i++){
+    const cur=phaseTimeline[i],prev=phaseTimeline[i-1];
+    if(cur.phase===null){run=0;continue;}
+    if(prev&&prev.phase!==null&&prev.phase!==cur.phase){
+      phaseTransitions.push({date:cur.date,from:prev.phase,to:cur.phase,previousMonths:run});
+      run=1;
+    }else{run=prev&&prev.phase===cur.phase?run+1:1;}
+  }
+}
+function renderHistory(){
+  const tbody=$('#historyRows'),btn=$('#exportHistory');
+  const last=phaseTimeline.at(-1);
+  const valid=last&&last.phase!==null&&last.phase===calculated;
+  if(!valid){
+    text('entryDate','—');text('entryFrom','—');text('monthsInPhase','—');
+    text('entryDetail','Historial no disponible');text('entryFromDetail','—');text('durationDetail','—');
+    text('historyTag','Sin historial válido');
+    text('historyNotice','No puede reconstruirse una secuencia mensual comparable con los datos disponibles.');
+    tbody.innerHTML='<tr><td colspan="4">Sin cambios mensuales verificables</td></tr>';
+    btn.disabled=true;return;
+  }
+  let start=phaseTimeline.length-1;
+  while(start>0&&phaseTimeline[start-1].phase===calculated)start--;
+  const entry=phaseTimeline[start],before=phaseTimeline[start-1],duration=phaseTimeline.length-start;
+  const knownEntry=!!before&&before.phase!==null;
+  text('entryDate',entry.date);
+  text('entryDetail',knownEntry?'Cierre de referencia de la transición':'Primer cierre de esta secuencia observada');
+  text('entryFrom',knownEntry?namePhase(before.phase):'No determinable');
+  text('entryFromDetail',knownEntry?'Fase del cierre inmediatamente anterior':'No hay un cierre anterior comparable');
+  text('monthsInPhase',duration+(duration===1?' mes':' meses'));
+  text('durationDetail','Hasta el cierre '+last.date);
+  text('historyTag',knownEntry?'Última entrada identificada':'Entrada no verificable');
+  text('historyNotice',knownEntry
+    ?`El modelo pasa de ${PHASES[before.phase]} a ${PHASES[calculated]} en el cierre ${entry.date}. Es un mes de referencia del modelo, NO la fecha de publicación ni la fecha exacta de operación.`
+    :'Se observa la fase actual desde el primer cierre disponible, pero no se puede demostrar cuándo comenzó ni de qué fase procedía.');
+  const recent=phaseTransitions.slice(-12).reverse();
+  tbody.innerHTML=recent.length?recent.map(t=>`<tr><td>${t.date}</td><td>${namePhase(t.from)}</td><td>${namePhase(t.to)}</td><td>${t.previousMonths} ${t.previousMonths===1?'mes':'meses'}</td></tr>`).join(''):'<tr><td colspan="4">No hay transiciones consecutivas detectables en los datos</td></tr>';
+  btn.disabled=phaseTransitions.length===0;
+}
+function renderAllocation(){
+  const w=WEIGHTS[selection],c=capital(),totals={'Acciones':0,'Bonos':0,'Oro':0};
+  text('phaseHeading',namePhase(selection));
+  text('selectionInfo',calculated===null?'Sin diagnóstico actual confirmado: asignación teórica.':selection===calculated?'Visualizando los pesos de la señal calculada.':'Visualización MANUAL: fase distinta de la calculada; NO es la señal actual.');
+  $('#allocRows').innerHTML=Object.entries(w).map(([ticker,p])=>{totals[typ(ticker)]+=p;return `<tr><td><b>${ticker}</b></td><td>${INFO[ticker]}</td><td>${num(p)}%</td><td>${euro(c*p/100)}</td></tr>`}).join('');
+  $('#allocationBar').innerHTML=Object.entries(w).map(([t,p],i)=>`<span title="${t}: ${num(p)}%" style="width:${num(p)}%;background:${COLORS[i%COLORS.length]}"></span>`).join('');
+  $('#summary').innerHTML=Object.entries(totals).map(([k,p])=>`<div class="metric"><div class="label">${k}</div><div class="value">${num(p)}%</div></div>`).join('');
+}
+function orderData(){
+  const c=capital(),invested=ALL.reduce((s,t)=>s+money(positions[t]||0),0),cash=c-invested,w=WEIGHTS[selection];
+  const orders=ALL.map(t=>({ticker:t,current:money(positions[t]||0),target:c*(w[t]||0)/100})).map(o=>({...o,diff:o.target-o.current}));
+  const buys=orders.reduce((s,o)=>s+Math.max(0,o.diff),0);
+  const sells=orders.reduce((s,o)=>s+Math.max(0,-o.diff),0);
+  return {c,invested,cash,orders,buys,sells,residual:cash+sells-buys};
+}
+function renderOrders(){
+  const {c,invested,cash,orders,buys,sells,residual}=orderData();
+  text('invested',euro(invested));text('cash',euro(cash));text('targetCapital',euro(c));text('buys',euro(buys));text('sells',euro(sells));text('residual',euro(residual));
+  $('#cash').className='value '+(cash<-.009?'negative':'');
+  const manual=calculated===null||selection!==calculated;
+  text('ordersMode',manual?'Simulación manual':modelOk?'Señal V7.4 · revisar':'Datos por revisar');
+  let warning=manual?'La fase explorada no es una señal operativa vigente. ':'Cálculo orientativo basado en la fase V7.4. ';
+  if(!modelOk)warning+='No hay señal plenamente verificada con datos recientes; no operes basándote únicamente en esta página. ';
+  if(cash<-.009)warning+='ATENCIÓN: el valor actual introducido supera el capital objetivo; revisa la cifra de capital y las posiciones. ';
+  warning+='Los importes no consideran comisiones, divisa ni impuestos.';
+  text('orderWarning',warning);
+  $('#orderRows').innerHTML=orders.filter(o=>o.current>.005||o.target>.005).map(o=>{
+    const action=Math.abs(o.diff)<.005?'Mantener':o.diff>0?'Comprar':'Vender';
+    const cls=action==='Comprar'?'buy':action==='Vender'?'sell':'hold';
+    return `<tr><td><b>${o.ticker}</b></td><td>${INFO[o.ticker]}</td><td>${euro(o.current)}</td><td>${euro(o.target)}</td><td class="${cls}">${o.diff>0?'+':''}${euro(o.diff)}</td><td class="${cls}">${action}</td></tr>`;
+  }).join('');
+}
+function render(){renderAllocation();renderOrders();}
+async function refresh(){
+  try{
+    text('status','Consultando data.json…');
+    if(!window.MacroV74||typeof window.MacroV74.evaluate!=='function')throw new Error('No se ha cargado clasificador-v74.js');
+    const r=await fetch('./data.json?t='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    data=await r.json();
+    diagnostic=window.MacroV74.evaluate(data);
+    calculated=diagnostic.phase;
+    const oldAsOf=priorMonthOf(diagnostic.decisionDate);
+    previousDiagnostic=window.MacroV74.evaluate(data,oldAsOf);
+    previous=previousDiagnostic.phase;
+    text('actual',namePhase(calculated));text('mode',calculated===null?'Sin señal':'Señal calculada');
+    text('currentHelp','Cierre macro: '+diagnostic.decisionDate+' · Último proceso: '+(data.updated_at?new Date(data.updated_at).toLocaleString('es-ES'):'fecha no disponible'));
+    text('status','Datos cargados · '+Object.keys(data.errors||{}).length+' fuentes con errores reportados');
+    if(calculated!==null){selection=calculated;$('#phase').value=String(selection);}
+    buildHistory();renderHistory();renderSignal();render();
+  }catch(err){
+    data=null;diagnostic=null;previousDiagnostic=null;calculated=null;previous=null;modelOk=false;phaseTimeline=[];phaseTransitions=[];
+    text('actual','No se pudo obtener el diagnóstico');text('status','Error al leer los datos: '+err.message);text('mode','Sin señal');
+    renderHistory();renderSignal();render();
+  }
+}
+function csvDownload(filename,rows){
+  const csv='\ufeff'+rows.map(r=>r.map(v=>String(v).replace(/;/g,',').replace(/\r?\n/g,' ')).join(';')).join('\r\n');
+  const u=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  const a=document.createElement('a');a.href=u;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+}
+$('#phase').addEventListener('change',e=>{selection=Number(e.target.value);render();});
+$('#capital').addEventListener('input',render);
+$('#refresh').addEventListener('click',refresh);
+$('#export').addEventListener('click',()=>{
+  const c=capital(),rows=[['Fase','ETF','Activo','Peso %','Capital objetivo EUR'],...Object.entries(WEIGHTS[selection]).map(([t,p])=>[PHASES[selection],t,INFO[t],p,(c*p/100).toFixed(2)])];
+  csvDownload('asignacion_V7.4_fase_'+(selection+1)+'.csv',rows);
+});
+$('#exportOrders').addEventListener('click',()=>{
+  const {orders}=orderData();
+  const rows=[['Fase seleccionada','Fase del radar','Cierre macro','ETF','Activo','Actual EUR','Objetivo EUR','Diferencia EUR','Accion','Tipo señal'],
+  ...orders.filter(o=>o.current>.005||o.target>.005).map(o=>[PHASES[selection],namePhase(calculated),diagnostic?.decisionDate||'',o.ticker,INFO[o.ticker],o.current.toFixed(2),o.target.toFixed(2),o.diff.toFixed(2),Math.abs(o.diff)<.005?'Mantener':o.diff>0?'Comprar':'Vender',selection===calculated&&modelOk?'Calculada - verificar':'Simulacion / datos no verificados'])];
+  csvDownload('rebalanceo_V7.4_'+(diagnostic?.decisionDate||'sin-fecha')+'.csv',rows);
+});
+$('#exportHistory').addEventListener('click',()=>{
+  if(!phaseTransitions.length)return;
+  const rows=[['Cierre entrada','Fase anterior','Nueva fase','Meses en fase anterior'],
+    ...phaseTransitions.map(t=>[t.date,namePhase(t.from),namePhase(t.to),t.previousMonths])];
+  csvDownload('historial_fases_V7.4_'+(diagnostic?.decisionDate||'sin-fecha')+'.csv',rows);
+});
+$('#clearHoldings').addEventListener('click',()=>{
+  if(!confirm('¿Poner a cero todas las posiciones guardadas en este navegador?'))return;
+  positions={};holdingsSave();for(const t of ALL)$('#h_'+t).value='0';renderOrders();
+});
+holdingsLoad();initHoldings();render();refresh();
+</script></body></html>
