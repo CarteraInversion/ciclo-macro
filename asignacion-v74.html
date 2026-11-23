@@ -86,7 +86,7 @@
 <script>
 'use strict';
 const PHASES=['Recuperación','Expansión','Reflación avanzada','Goldilocks','Desaceleración','Recesión'];
-const RAW_WEIGHTS=[{"SPY":25,"IWO":20,"IWN":15,"XLI":15,"XLF":10,"QQQ":5,"GLD":10},{"SPY":12.5,"QQQ":19.1,"SHY":5,"XLF":15.9,"XLI":18.2,"XLK":15.8,"XLY":13.4},{"SHY":5,"XLB":13.6,"XLE":28.5,"XLI":12.8,"XLU":13.2,"XLV":13.5,"XLY":13.4},{"SPY":11.6,"QQQ":17.1,"TLT":15.8,"SHY":5,"XLK":21.3,"XLU":14.5,"XLV":14.7},{"QQQ":17.8,"GLD":12,"SHY":14.5,"XLK":18.1,"XLP":12.2,"XLC":25.5},{"QQQ":18.4,"GLD":14.5,"SHY":5,"XLB":16.4,"XLI":12.1,"XLK":18,"XLY":15.7}];
+const RAW_WEIGHTS=[{"SPY":25,"IWO":20,"IWN":15,"XLI":15,"XLF":10,"QQQ":5,"GLD":10},{"SHY":5,"XLB":13.6,"XLE":28.5,"XLI":12.8,"XLU":13.2,"XLV":13.5,"XLY":13.4},{"SHY":5,"XLB":11.4,"XLE":28.5,"XLF":19.1,"XLP":13.7,"XLU":11.7,"XLV":10.6},{"SPY":11.6,"QQQ":17.1,"TLT":15.8,"SHY":5,"XLK":21.3,"XLU":14.5,"XLV":14.7},{"QQQ":17.8,"GLD":12,"SHY":14.5,"XLK":18.1,"XLP":12.2,"XLC":25.5},{"QQQ":18.4,"GLD":14.5,"SHY":5,"XLB":16.4,"XLI":12.1,"XLK":18,"XLY":15.7}];
 const WEIGHTS=RAW_WEIGHTS.map(w=>{const sum=Object.values(w).reduce((a,b)=>a+b,0);return Object.fromEntries(Object.entries(w).map(([k,v])=>[k,100*v/sum]));});
 if(WEIGHTS.length!==6||WEIGHTS.some(w=>Math.abs(Object.values(w).reduce((a,b)=>a+b,0)-100)>1e-8))throw Error('Pesos V7.4 inválidos');
 const INFO={SPY:'S&P 500',QQQ:'Nasdaq 100',IWO:'Small Caps Growth',IWN:'Small Caps Value',XLI:'Industriales',XLF:'Financieras',XLE:'Energía',XLB:'Materiales',XLK:'Tecnología',XLV:'Salud',XLP:'Consumo básico',XLC:'Servicios de comunicación',XLY:'Consumo discrecional',XLU:'Utilities',TLT:'Bonos Tesoro largos',IEF:'Bonos Tesoro intermedios',SHY:'Bonos Tesoro cortos',GLD:'Oro'};
